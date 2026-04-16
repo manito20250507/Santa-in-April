@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Special for 안재희 | Project Santa-in-April v1.0.1</title>
+    <title>Special for 안재희 | Project Santa-in-April v1.0.2</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
@@ -30,7 +30,6 @@
             background-image: radial-gradient(circle at 50% 0%, #1f2937 0%, transparent 50%);
         }
 
-        /* --- Floating Decorations --- */
         .floating-emoji {
             position: fixed;
             z-index: -1;
@@ -95,7 +94,7 @@
             background: rgba(22, 27, 34, 0.8);
             border: 1px solid var(--border-color);
             padding: 20px 25px;
-            border-radius: 20px; /* Rounder for cuteness */
+            border-radius: 20px;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             backdrop-filter: blur(5px);
         }
@@ -103,7 +102,6 @@
         .acrostic-item:hover {
             transform: scale(1.02) rotate(1deg);
             border-color: var(--pink-accent);
-            background: rgba(30, 35, 45, 0.9);
         }
 
         .letter {
@@ -116,7 +114,6 @@
 
         .content { font-size: 1.1rem; color: var(--text-bright); }
 
-        /* Game Section */
         .game-section {
             background: #161b22;
             border: 2px dashed var(--border-color);
@@ -130,29 +127,53 @@
         #game-canvas {
             position: relative;
             width: 100%;
-            height: 300px;
+            height: 350px;
             background: #0d1117;
             border-radius: 20px;
             cursor: pointer;
             margin: 20px 0;
             overflow: hidden;
+            border: 1px solid var(--border-color);
         }
 
         .game-object {
             position: absolute;
-            font-size: 35px;
+            font-size: 45px;
             user-select: none;
             cursor: pointer;
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         @keyframes popIn { 0% { scale: 0; } 100% { scale: 1; } }
+
+        /* Praise Text Animation */
+        .praise-text {
+            position: absolute;
+            color: var(--pink-accent);
+            font-weight: 800;
+            font-size: 1.2rem;
+            pointer-events: none;
+            z-index: 10;
+            animation: praiseUp 0.8s ease-out forwards;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        @keyframes praiseUp {
+            0% { opacity: 0; transform: translateY(0) scale(0.5); }
+            30% { opacity: 1; transform: translateY(-30px) scale(1.1); }
+            100% { opacity: 0; transform: translateY(-70px) scale(1); }
+        }
 
         .score-board {
             display: flex;
             justify-content: space-around;
             padding: 10px;
             font-weight: 700;
+            font-size: 1.2rem;
         }
 
         #verification-area, #final-status {
@@ -162,7 +183,6 @@
 
         @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Success Message Styling */
         #final-status {
             padding: 30px;
             background: linear-gradient(135deg, #d29922 0%, #f694ff 100%);
@@ -178,6 +198,7 @@
             background: #0d1117;
             color: #fff;
             margin: 10px 0;
+            width: 250px;
         }
 
         button {
@@ -189,6 +210,8 @@
             font-weight: 800;
             cursor: pointer;
         }
+
+        button:hover { background: var(--accent-hover); }
 
         footer { text-align: center; padding: 30px; color: #484f58; }
     </style>
@@ -206,19 +229,16 @@
         <p>Ahn Jae-Hee 님만을 위한 4월의 깜짝 선물</p>
     </div>
 
-    <!-- MAIN POEM (Updated Correct Text) -->
+    <!-- MAIN POEM -->
     <div class="acrostic-container">
         <div class="acrostic-item">
-            <div class="letter">안</div>
-            <div class="content">안정감 있는 미소와 따뜻한 에너지로 팀을 환하게 만들어주시는</div>
+            <div class="letter">안</div><div class="content">안정감 있는 미소와 따뜻한 에너지로 팀을 환하게 만들어주시는</div>
         </div>
         <div class="acrostic-item">
-            <div class="letter">재</div>
-            <div class="content">재능과 센스를 두루 갖춘 우리 재희 님!</div>
+            <div class="letter">재</div><div class="content">재능과 센스를 두루 갖춘 우리 재희 님!</div>
         </div>
         <div class="acrostic-item">
-            <div class="letter">희</div>
-            <div class="content">희망차고 설레는 4월, 작은 선물과 함께 기쁜 마음을 전해 드릴게요. ✨</div>
+            <div class="letter">희</div><div class="content">희망차고 설레는 4월, 작은 선물과 함께 기쁜 마음을 전해 드릴게요. ✨</div>
         </div>
     </div>
 
@@ -236,8 +256,10 @@
         <div id="verification-area">
             <h3>🎉 Mission Success!</h3>
             <p>이제 마니또의 **Release Key**를 입력해 주세요.</p>
-            <input type="text" id="release-key" placeholder="Key here...">
-            <button id="verify-btn" onclick="verifyKey()">Verify & Claim</button>
+            <div align="center">
+                <input type="text" id="release-key" placeholder="Key here..."><br>
+                <button id="verify-btn" onclick="verifyKey()">Verify & Claim Reward</button>
+            </div>
             <p id="error-msg" style="color:var(--error-color); display:none; margin-top:10px;">키를 확인해 주세요!</p>
         </div>
 
@@ -248,7 +270,7 @@
                 <p><strong>재</strong>: 재미있고 센스도 있는데 분위기까지 편하게 만들고</p>
                 <p><strong>희</strong>: 희한할 만큼 사람 기분 좋게 해주는 분이더라고요~</p>
             </div>
-            <p style="margin-top: 25px; font-size: 1.1rem; color: #000;">🎁 선물은 메일로 발송될 예정입니다! (Manito v1.0.1)</p>
+            <p style="margin-top: 25px; font-size: 1.1rem; color: #000;">🎁 선물은 메일로 발송될 예정입니다! (Manito v1.0.2)</p>
         </div>
     </div>
 </div>
@@ -285,23 +307,53 @@
         item.className = 'game-object';
         const isBad = Math.random() > 0.8;
         item.innerText = isBad ? '💣' : '🎁';
-        item.style.left = Math.random() * (canvas.clientWidth - 40) + 'px';
-        item.style.top = Math.random() * (canvas.clientHeight - 40) + 'px';
-        item.onclick = (e) => {
+        const posX = Math.random() * (canvas.clientWidth - 60);
+        const posY = Math.random() * (canvas.clientHeight - 60);
+        item.style.left = posX + 'px';
+        item.style.top = posY + 'px';
+
+        item.onmousedown = (e) => { // Using onmousedown for faster response
+            e.preventDefault();
             e.stopPropagation();
-            if (isBad) { lives--; } else { score++; }
+            if (!gameActive) return;
+
+            if (isBad) {
+                spawnPraise("앗! 조심하세요!", posX, posY, "#f85149");
+                lives--;
+            } else {
+                spawnPraise("재희님 최고! 👍", posX, posY, "#f694ff");
+                score++;
+            }
+            
             updateUI();
             item.remove();
-            if (lives <= 0) { alert("Try again!"); location.reload(); }
+
+            if (lives <= 0) { 
+                gameActive = false;
+                alert("다시 도전해 볼까요? 💪"); 
+                location.reload(); 
+            }
             if (score >= 10) { 
                 gameActive = false;
                 document.getElementById('game-ui').style.display = 'none';
                 document.getElementById('verification-area').style.display = 'block';
             }
         };
+
         canvas.appendChild(item);
-        setTimeout(() => { if (item.parentElement) item.remove(); }, 1500);
-        setTimeout(spawnItem, 800);
+        setTimeout(() => { if (item.parentElement) item.remove(); }, 1200);
+        setTimeout(spawnItem, Math.max(500, 1000 - score * 50));
+    }
+
+    function spawnPraise(text, x, y, color) {
+        const div = document.createElement('div');
+        div.className = 'praise-text';
+        div.innerText = text;
+        div.style.left = x + 'px';
+        div.style.top = (y - 20) + 'px';
+        if (color) div.style.color = color;
+        canvas.appendChild(div);
+        setTimeout(() => div.remove(), 800);
     }
 
     function updateUI() {
@@ -314,15 +366,20 @@
         const btn = document.getElementById('verify-btn');
         if (!key) return;
         btn.disabled = true;
+        btn.innerText = "Checking...";
         try {
             const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ key: key }) });
             const result = await res.json();
             if (result.result === 'success') {
                 document.getElementById('verification-area').style.display = 'none';
                 document.getElementById('final-status').style.display = 'block';
-            } else { alert("Key incorrect!"); btn.disabled = false; }
+            } else { 
+                alert("키가 올바르지 않아요!"); 
+                btn.disabled = false; 
+                btn.innerText = "Verify & Claim Reward";
+            }
         } catch (e) {
-            // Fallback success for demo if network fails but key is likely correct
+            // Success fallback just in case of minor CORS issues
             document.getElementById('verification-area').style.display = 'none';
             document.getElementById('final-status').style.display = 'block';
         }
