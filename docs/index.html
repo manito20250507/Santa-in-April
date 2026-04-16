@@ -16,6 +16,7 @@
             --text-bright: #f0f6fc;
             --accent-color: #238636;
             --accent-hover: #2ea043;
+            --error-color: #f85149;
             --gradient-primary: linear-gradient(135deg, #238636 0%, #2ea043 100%);
             --gradient-gold: linear-gradient(135deg, #d29922 0%, #e3b341 100%);
         }
@@ -30,7 +31,6 @@
             line-height: 1.6;
         }
 
-        /* GitHub-style Header */
         header {
             background-color: #010409;
             padding: 16px 32px;
@@ -47,14 +47,12 @@
         .repo-path { font-size: 18px; font-weight: 600; color: #58a6ff; }
         .repo-path span { color: var(--text-main); font-weight: 400; }
 
-        /* Container */
         .container {
             max-width: 900px;
             margin: 0 auto;
             padding: 40px 20px;
         }
 
-        /* Hero Section */
         .hero {
             text-align: center;
             padding: 60px 0;
@@ -74,7 +72,6 @@
 
         .hero p { font-size: 1.2rem; color: #8b949e; }
 
-        /* Acrostic Poem */
         .acrostic-container {
             display: flex;
             flex-direction: column;
@@ -90,12 +87,6 @@
             padding: 20px 30px;
             border-radius: 12px;
             transition: transform 0.3s ease, border-color 0.3s ease;
-            cursor: pointer;
-        }
-
-        .acrostic-item:hover {
-            transform: translateX(10px);
-            border-color: var(--accent-color);
         }
 
         .letter {
@@ -108,7 +99,6 @@
 
         .content { font-size: 1.2rem; color: var(--text-bright); }
 
-        /* Game Area */
         .game-section {
             background: #161b22;
             border: 2px dashed #444c56;
@@ -123,7 +113,9 @@
             position: relative;
             width: 100%;
             height: 250px;
-            cursor: crosshair;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .gift {
@@ -134,29 +126,59 @@
             user-select: none;
         }
 
-        .gift:hover { transform: scale(1.2); }
-
-        .game-status {
-            font-weight: 600;
-            margin-top: 20px;
-            color: var(--accent-color);
-        }
-
-        /* Result Modal/Area */
-        #final-message {
+        /* Key Verification Form */
+        #verification-area {
             display: none;
             margin-top: 30px;
-            padding: 30px;
-            background: var(--gradient-gold);
-            color: #000;
-            border-radius: 12px;
-            font-weight: 700;
             animation: fadeIn 0.8s ease forwards;
         }
 
+        .input-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            padding: 12px 20px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: #0d1117;
+            color: white;
+            width: 250px;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 12px 24px;
+            border-radius: 6px;
+            border: none;
+            background: var(--accent-color);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover { background: var(--accent-hover); }
+        button:disabled { background: #444; cursor: not-allowed; }
+
+        #final-status {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background: #23863622;
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            font-weight: 600;
+            color: var(--text-bright);
+        }
+
+        .error-msg { color: var(--error-color); font-size: 0.9rem; margin-top: 8px; display: none; }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Footer */
         footer {
             text-align: center;
             padding: 40px;
@@ -189,7 +211,6 @@
         <p>Ahn Jae-Hee 님을 위한 마니또의 특별 패키지가 도착했습니다.</p>
     </div>
 
-    <!-- Triple Poem -->
     <div class="acrostic-container">
         <div class="acrostic-item">
             <div class="letter">안</div>
@@ -205,29 +226,29 @@
         </div>
     </div>
 
-    <!-- Mini Game Area -->
+    <!-- Game Section -->
     <div class="game-section">
-        <h3>🔍 마니또의 선물 찾기</h3>
-        <p>화면에 흩어진 선물 상자 5개를 클릭해서 모두 모아보세요!</p>
+        <div id="game-intro">
+            <h3>🔍 마니또의 선물 찾기</h3>
+            <p>화면에 흩어진 선물 상자 5개를 클릭해서 모두 모아보세요!</p>
+        </div>
+        
         <div id="game-canvas"></div>
         <div class="game-status" id="counter">발견한 선물: 0 / 5</div>
 
-        <div id="final-message">
-            🎉 축하합니다! 모든 선물을 찾으셨네요! <br><br>
-            재희님, 항상 묵묵히 제 몫을 다해주시고 친절하게 도와주셔서 정말 감사해요.<br>
-            이번 한 달, 재희님께 기분 좋은 일만 가득하길 응원하는 마니또가 있다는 걸 기억해 주세요!<br><br>
-            🎁 비밀 선물은 오늘 오후, 재희님 책상 위에 살짝 놓아둘게요!
+        <!-- Verification Form -->
+        <div id="verification-area">
+            <h3>🎊 Mission Complete!</h3>
+            <p>모든 선물을 찾으셨네요! 이제 마니또가 보내준 **Release Key**를 입력해 주세요.</p>
+            <div class="input-group">
+                <input type="text" id="release-key" placeholder="Enter Release Key...">
+                <button id="verify-btn" onclick="verifyKey()">Verify & Claim</button>
+            </div>
+            <div id="error-msg" class="error-msg">올바르지 않은 키입니다. 다시 확인해 주세요!</div>
         </div>
-    </div>
 
-    <div style="margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-        <div class="acrostic-item" style="flex-direction: column; align-items: flex-start;">
-            <div style="color: #58a6ff; font-weight: 600; margin-bottom: 8px;">Top Contributor</div>
-            <div style="font-size: 1.1rem;">#미소천사 #실력파 #팀의보물</div>
-        </div>
-        <div class="acrostic-item" style="flex-direction: column; align-items: flex-start;">
-            <div style="color: #238636; font-weight: 600; margin-bottom: 8px;">Security Check</div>
-            <div style="font-size: 1.1rem;">Verified Manito Protection Active</div>
+        <div id="final-status">
+            ✅ Reward artifact deployed to registered inbox
         </div>
     </div>
 </div>
@@ -236,14 +257,20 @@
     <p>© 2026 Secret Manito Service. All rights reserved.</p>
     <div>
         <span class="badge">GitHub Pages</span>
-        <span class="badge">Made for Jae-Hee</span>
+        <span class="badge">Google Apps Script API</span>
     </div>
 </footer>
 
 <script>
+    // --- 설정 정보 (GAS 배포 후 URL을 여기에 넣으세요) ---
+    const GAS_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL"; 
+
     const canvas = document.getElementById('game-canvas');
     const counterDisplay = document.getElementById('counter');
-    const finalMessage = document.getElementById('final-message');
+    const verificationArea = document.getElementById('verification-area');
+    const finalStatus = document.getElementById('final-status');
+    const errorMsg = document.getElementById('error-msg');
+    
     let collected = 0;
     const totalGifts = 5;
 
@@ -251,11 +278,8 @@
         const gift = document.createElement('div');
         gift.className = 'gift';
         gift.innerText = '🎁';
-        
-        // Random Position
         const x = Math.random() * (canvas.clientWidth - 40);
         const y = Math.random() * (canvas.clientHeight - 40);
-        
         gift.style.left = x + 'px';
         gift.style.top = y + 'px';
         
@@ -266,25 +290,62 @@
             collected++;
             updateStats();
         };
-        
         canvas.appendChild(gift);
     }
 
     function updateStats() {
         counterDisplay.innerText = `발견한 선물: ${collected} / ${totalGifts}`;
         if (collected === totalGifts) {
+            document.getElementById('game-intro').style.display = 'none';
             counterDisplay.style.display = 'none';
-            finalMessage.style.display = 'block';
-            launchConfetti();
+            verificationArea.style.display = 'block';
         }
     }
 
-    function launchConfetti() {
-        // Simple scale effect for winning
-        document.body.style.boxShadow = "inset 0 0 100px rgba(46, 160, 67, 0.4)";
+    async function verifyKey() {
+        const key = document.getElementById('release-key').value;
+        const btn = document.getElementById('verify-btn');
+        
+        if (!key) return;
+
+        btn.disabled = true;
+        btn.innerText = "Verifying...";
+        errorMsg.style.display = 'none';
+
+        try {
+            // Google Apps Script는 보안상 CORS 문제로 fetch 시 옵션이 필요할 수 있습니다.
+            const response = await fetch(GAS_URL, {
+                method: 'POST',
+                body: JSON.stringify({ key: key })
+            });
+            const result = await response.json();
+
+            if (result.result === 'success') {
+                verificationArea.style.display = 'none';
+                finalStatus.style.display = 'block';
+            } else if (result.result === 'already_used') {
+                errorMsg.innerText = "이미 사용된 키입니다.";
+                errorMsg.style.display = 'block';
+                btn.disabled = false;
+                btn.innerText = "Verify & Claim";
+            } else {
+                errorMsg.innerText = "올바르지 않은 키입니다. 다시 확인해 주세요!";
+                errorMsg.style.display = 'block';
+                btn.disabled = false;
+                btn.innerText = "Verify & Claim";
+            }
+        } catch (e) {
+            console.error(e);
+            // 테스트용 (실제 GAS URL이 없을 때 성공 화면을 보고 싶다면 아래 주석을 해제하세요)
+            // verificationArea.style.display = 'none';
+            // finalStatus.style.display = 'block';
+            errorMsg.innerText = "연결 오류가 발생했습니다. (GAS URL 설정을 확인해 주세요)";
+            errorMsg.style.display = 'block';
+            btn.disabled = false;
+            btn.innerText = "Verify & Claim";
+        }
     }
 
-    // Initialize gifts
     for(let i=0; i<totalGifts; i++) {
         setTimeout(createGift, i * 300);
     }
